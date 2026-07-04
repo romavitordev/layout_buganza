@@ -25,6 +25,9 @@ export interface PublicPropertyDTO {
   banheiros: number | null;
   vagas: number | null;
   areaM2: number | null;
+  /** Preços públicos como string decimal ("750000") ou null = sob consulta. */
+  precoVenda: string | null;
+  precoLocacao: string | null;
   fotos: PublicPhotoDTO[];
 }
 

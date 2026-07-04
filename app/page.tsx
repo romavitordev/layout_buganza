@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import PropertyCard from "@/components/PropertyCard";
+import ComoFunciona from "@/components/ComoFunciona";
 import QuemSomos from "@/components/QuemSomos";
+import Faq from "@/components/Faq";
+import AnuncieBanner from "@/components/AnuncieBanner";
 import SiteFooter from "@/components/SiteFooter";
 import { DESTAQUES } from "@/lib/imoveis-data";
 
@@ -42,7 +45,13 @@ export default function HomePage() {
         </div>
       </section>
 
+      <ComoFunciona />
+
       <QuemSomos />
+
+      <Faq />
+
+      <AnuncieBanner />
 
       <SiteFooter />
     </main>
