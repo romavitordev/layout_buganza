@@ -31,6 +31,7 @@ export const IMOVEIS: PublicPropertyDTO[] = [
     areaM2: 180,
     precoVenda: "750000",
     precoLocacao: null,
+    videoUrl: null,
     fotos: fotos("bz-casa", 3),
   },
   {
@@ -50,6 +51,7 @@ export const IMOVEIS: PublicPropertyDTO[] = [
     areaM2: 40,
     precoVenda: null,
     precoLocacao: "2200",
+    videoUrl: null,
     fotos: fotos("bz-sala", 2),
   },
   {
@@ -69,6 +71,7 @@ export const IMOVEIS: PublicPropertyDTO[] = [
     areaM2: 68,
     precoVenda: "520000",
     precoLocacao: "2800",
+    videoUrl: null,
     fotos: fotos("bz-apto", 3),
   },
   {
@@ -88,6 +91,7 @@ export const IMOVEIS: PublicPropertyDTO[] = [
     areaM2: 300,
     precoVenda: "195000",
     precoLocacao: null,
+    videoUrl: null,
     fotos: fotos("bz-terreno", 2),
   },
   {
@@ -107,6 +111,7 @@ export const IMOVEIS: PublicPropertyDTO[] = [
     areaM2: 260,
     precoVenda: "980000",
     precoLocacao: null,
+    videoUrl: null,
     fotos: fotos("bz-casavot", 3),
   },
   {
@@ -126,6 +131,7 @@ export const IMOVEIS: PublicPropertyDTO[] = [
     areaM2: 80,
     precoVenda: null,
     precoLocacao: "4500",
+    videoUrl: null,
     fotos: fotos("bz-loja", 2),
   },
 ];

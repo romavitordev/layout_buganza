@@ -28,6 +28,8 @@ export interface PublicPropertyDTO {
   /** Preços públicos como string decimal ("750000") ou null = sob consulta. */
   precoVenda: string | null;
   precoLocacao: string | null;
+  /** Vídeo do imóvel — exibido só no detalhe, nunca como capa. */
+  videoUrl: string | null;
   fotos: PublicPhotoDTO[];
 }
 
