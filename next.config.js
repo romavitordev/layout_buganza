@@ -7,7 +7,8 @@ const nextConfig = {
   basePath: isPages ? "/layout_buganza" : "",
   trailingSlash: true,
   env: {
-    NEXT_PUBLIC_WHATSAPP_NUMBER: "5515991150890",
+    // Número oficial da Buganza Imóveis: +55 15 99829-6767
+    NEXT_PUBLIC_WHATSAPP_NUMBER: "5515998296767",
   },
   images: {
     unoptimized: true,
