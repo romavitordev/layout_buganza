@@ -21,6 +21,8 @@ export interface PublicPropertyDTO {
   transacao: Transacao;
   cidade: string;
   bairro: string;
+  /** Endereço opcional para o pino do mapa. */
+  enderecoMapa: string | null;
   quartos: number | null;
   banheiros: number | null;
   vagas: number | null;

@@ -148,8 +148,10 @@ export default function ImovelPage({ params }: PageProps) {
               </h2>
               <iframe
                 src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                  `${imovel.bairro}, ${imovel.cidade}, SP`
-                )}&z=14&output=embed`}
+                  imovel.enderecoMapa
+                    ? `${imovel.enderecoMapa}, ${imovel.cidade}, SP`
+                    : `${imovel.bairro}, ${imovel.cidade}, SP`
+                )}&z=${imovel.enderecoMapa ? 16 : 14}&output=embed`}
                 title={`Mapa de ${imovel.bairro}, ${imovel.cidade}`}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -157,8 +159,9 @@ export default function ImovelPage({ params }: PageProps) {
                 className="aspect-video w-full rounded-2xl border border-black/10 grayscale transition-[filter] duration-500 ease-premium hover:grayscale-0"
               />
               <p className="mt-2 text-[12px] text-black/45">
-                Localização aproximada ({imovel.bairro}) — passamos o endereço
-                completo no atendimento pelo WhatsApp.
+                {imovel.enderecoMapa
+                  ? `${imovel.enderecoMapa} · ${imovel.bairro}, ${imovel.cidade}`
+                  : `Localização aproximada (${imovel.bairro}) — passamos o endereço completo no atendimento pelo WhatsApp.`}
               </p>
             </section>
           </div>
