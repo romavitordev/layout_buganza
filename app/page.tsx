@@ -14,6 +14,7 @@ export default function HomePage() {
       <Hero />
 
       <section
+        id="destaques"
         className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24"
         aria-labelledby="destaques-titulo"
       >
