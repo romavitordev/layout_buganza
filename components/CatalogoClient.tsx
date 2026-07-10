@@ -1,11 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MessageCircle, SearchX } from "lucide-react";
+import { MessageCircle, Search, SearchX } from "lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import type { PublicPropertyDTO } from "@/lib/dto";
 import type { TipoImovel, Transacao } from "@/lib/types";
 import { linkWhatsAppGeral } from "@/lib/whatsapp";
+
+type Ordem = "recentes" | "preco-asc" | "preco-desc";
+
+const ORDENS: { valor: Ordem; label: string }[] = [
+  { valor: "recentes", label: "Mais recentes" },
+  { valor: "preco-asc", label: "Menor preço" },
+  { valor: "preco-desc", label: "Maior preço" },
+];
+
+/** Preço de referência para ordenar: venda, senão locação; null = sem preço. */
+function precoDeReferencia(imovel: PublicPropertyDTO): number | null {
+  const valor = Number(imovel.precoVenda ?? imovel.precoLocacao);
+  return Number.isFinite(valor) && valor > 0 ? valor : null;
+}
 
 /**
  * Catálogo com filtros client-side — versão estática (GitHub Pages).
@@ -62,26 +76,67 @@ export default function CatalogoClient({
   const [tipo, setTipo] = useState<TipoImovel | undefined>(undefined);
   const [transacao, setTransacao] = useState<Transacao | undefined>(undefined);
   const [cidade, setCidade] = useState<string | undefined>(undefined);
+  const [busca, setBusca] = useState("");
+  const [ordem, setOrdem] = useState<Ordem>("recentes");
 
-  const filtrados = useMemo(
-    () =>
-      imoveis.filter((imovel) => {
-        if (tipo && imovel.tipo !== tipo) return false;
-        if (
-          transacao &&
-          imovel.transacao !== transacao &&
-          imovel.transacao !== "VENDA_LOCACAO"
-        ) {
-          return false;
-        }
-        if (cidade && imovel.cidade !== cidade) return false;
-        return true;
-      }),
-    [imoveis, tipo, transacao, cidade]
-  );
+  const filtrados = useMemo(() => {
+    const termo = busca.trim().toLowerCase();
+    const base = imoveis.filter((imovel) => {
+      if (tipo && imovel.tipo !== tipo) return false;
+      if (
+        transacao &&
+        imovel.transacao !== transacao &&
+        imovel.transacao !== "VENDA_LOCACAO"
+      ) {
+        return false;
+      }
+      if (cidade && imovel.cidade !== cidade) return false;
+      if (
+        termo &&
+        ![
+          imovel.titulo,
+          imovel.descricao,
+          imovel.bairro,
+          imovel.cidade,
+          imovel.codigo,
+        ].some((campo) => campo.toLowerCase().includes(termo))
+      ) {
+        return false;
+      }
+      return true;
+    });
+
+    if (ordem === "recentes") return base;
+    // "Sob consulta" (sem preço) vai sempre para o fim da lista
+    return base.slice().sort((a, b) => {
+      const pa = precoDeReferencia(a);
+      const pb = precoDeReferencia(b);
+      if (pa === null && pb === null) return 0;
+      if (pa === null) return 1;
+      if (pb === null) return -1;
+      return ordem === "preco-asc" ? pa - pb : pb - pa;
+    });
+  }, [imoveis, tipo, transacao, cidade, busca, ordem]);
 
   return (
     <>
+      {/* Busca por texto */}
+      <div className="relative mb-6 max-w-xl" role="search">
+        <Search
+          size={15}
+          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-black/35"
+          aria-hidden="true"
+        />
+        <input
+          type="search"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          placeholder="Buscar por bairro, título ou código…"
+          aria-label="Buscar imóveis por texto"
+          className="w-full rounded-pill border border-black/15 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus:border-black"
+        />
+      </div>
+
       {/* Filtros */}
       <div className="mb-12 flex flex-col gap-4">
         <div
@@ -148,6 +203,25 @@ export default function CatalogoClient({
             ))}
           </div>
         )}
+
+        <div
+          className="flex flex-wrap items-center gap-2"
+          role="group"
+          aria-label="Ordenar resultados"
+        >
+          <span className="mr-1 text-[11px] font-medium uppercase tracking-wide text-black/40">
+            Ordenar
+          </span>
+          {ORDENS.map(({ valor, label }) => (
+            <FilterPill
+              key={valor}
+              ativo={ordem === valor}
+              onClick={() => setOrdem(valor)}
+            >
+              {label}
+            </FilterPill>
+          ))}
+        </div>
       </div>
 
       {/* Resultados */}
