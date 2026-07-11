@@ -6,3 +6,15 @@
 export type TipoImovel = "RESIDENCIAL" | "COMERCIAL" | "TERRENO";
 
 export type Transacao = "VENDA" | "LOCACAO" | "VENDA_LOCACAO";
+
+export type SubtipoImovel =
+  | "CASA"
+  | "SOBRADO"
+  | "APARTAMENTO"
+  | "KITNET"
+  | "CHACARA"
+  | "SALA_COMERCIAL"
+  | "LOJA"
+  | "GALPAO"
+  | "TERRENO_URBANO"
+  | "TERRENO_CONDOMINIO";

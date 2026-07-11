@@ -5,13 +5,18 @@ import {
   ArrowLeft,
   Bath,
   BedDouble,
+  BedSingle,
   Building2,
   Car,
+  LandPlot,
+  Landmark,
   MapPin,
   MessageCircle,
+  Receipt,
   Ruler,
   Tag,
 } from "lucide-react";
+import ComodidadesList from "@/components/ComodidadesList";
 import Gallery from "@/components/Gallery";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -20,7 +25,7 @@ import WhatsAppLink from "@/components/WhatsAppLink";
 import { capaDoImovel } from "@/lib/dto";
 import { IMOVEIS, imovelPorSlug } from "@/lib/imoveis-data";
 import { linkWhatsAppGeral, linkWhatsAppImovel } from "@/lib/whatsapp";
-import { TIPO_LABEL, TRANSACAO_LABEL } from "@/lib/labels";
+import { SUBTIPO_LABEL, TIPO_LABEL, TRANSACAO_LABEL } from "@/lib/labels";
 import { formatarPreco, precoLocacaoFormatado } from "@/lib/format";
 
 /** Export estático: uma página por imóvel do catálogo de demonstração. */
@@ -69,7 +74,13 @@ export default function ImovelPage({ params }: PageProps) {
     : "Consultar valor no WhatsApp";
 
   const caracteristicas = [
-    { icone: Building2, rotulo: "Tipo", valor: TIPO_LABEL[imovel.tipo] },
+    {
+      icone: Building2,
+      rotulo: "Tipo",
+      valor: imovel.subtipo
+        ? SUBTIPO_LABEL[imovel.subtipo]
+        : TIPO_LABEL[imovel.tipo],
+    },
     { icone: Tag, rotulo: "Transação", valor: TRANSACAO_LABEL[imovel.transacao] },
     {
       icone: MapPin,
@@ -83,6 +94,9 @@ export default function ImovelPage({ params }: PageProps) {
           valor: String(imovel.quartos),
         }
       : null,
+    imovel.suites !== null && imovel.suites > 0
+      ? { icone: BedSingle, rotulo: "Suítes", valor: String(imovel.suites) }
+      : null,
     imovel.banheiros !== null
       ? { icone: Bath, rotulo: "Banheiros", valor: String(imovel.banheiros) }
       : null,
@@ -90,7 +104,32 @@ export default function ImovelPage({ params }: PageProps) {
       ? { icone: Car, rotulo: "Vagas", valor: String(imovel.vagas) }
       : null,
     imovel.areaM2 !== null
-      ? { icone: Ruler, rotulo: "Área", valor: `${imovel.areaM2} m²` }
+      ? {
+          icone: Ruler,
+          rotulo: imovel.areaTerrenoM2 !== null ? "Área útil" : "Área",
+          valor: `${imovel.areaM2} m²`,
+        }
+      : null,
+    imovel.areaTerrenoM2 !== null
+      ? {
+          icone: LandPlot,
+          rotulo: "Área do terreno",
+          valor: `${imovel.areaTerrenoM2} m²`,
+        }
+      : null,
+    formatarPreco(imovel.condominioMensal)
+      ? {
+          icone: Receipt,
+          rotulo: "Condomínio",
+          valor: `${formatarPreco(imovel.condominioMensal)}/mês`,
+        }
+      : null,
+    formatarPreco(imovel.iptuAnual)
+      ? {
+          icone: Landmark,
+          rotulo: "IPTU",
+          valor: `${formatarPreco(imovel.iptuAnual)}/ano`,
+        }
       : null,
   ].filter(
     (
@@ -249,6 +288,8 @@ export default function ImovelPage({ params }: PageProps) {
                 Resposta rápida · atendimento direto com os corretores
               </p>
             </div>
+
+            <ComodidadesList valores={imovel.comodidades} />
 
             <section aria-labelledby="descricao-titulo">
               <h2
