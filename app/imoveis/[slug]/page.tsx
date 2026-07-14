@@ -13,6 +13,7 @@ import {
   Ruler,
 } from "lucide-react";
 import ComodidadesList from "@/components/ComodidadesList";
+import ImoveisSemelhantes from "@/components/ImoveisSemelhantes";
 import Gallery from "@/components/Gallery";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -20,6 +21,7 @@ import ShareButton from "@/components/ShareButton";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import { capaDoImovel } from "@/lib/dto";
 import { IMOVEIS, imovelPorSlug } from "@/lib/imoveis-data";
+import { ranquearSemelhantes } from "@/lib/semelhantes";
 import { linkWhatsAppGeral, linkWhatsAppImovel } from "@/lib/whatsapp";
 import { SUBTIPO_LABEL, TIPO_LABEL, TRANSACAO_LABEL } from "@/lib/labels";
 import { formatarPreco, precoLocacaoFormatado } from "@/lib/format";
@@ -60,6 +62,15 @@ export function generateMetadata({ params }: PageProps): Metadata {
 export default function ImovelPage({ params }: PageProps) {
   const imovel = imovelPorSlug(params.slug);
   if (!imovel) notFound();
+
+  // Imóveis parecidos: candidatos da mesma cidade, ranqueados por afinidade
+  const semelhantes = ranquearSemelhantes(
+    imovel,
+    IMOVEIS.filter(
+      (i) => i.cidade === imovel.cidade && i.slug !== imovel.slug
+    ),
+    3
+  );
 
   const whatsappHref = linkWhatsAppImovel(imovel.slug);
   const precoVenda = formatarPreco(imovel.precoVenda);
@@ -317,6 +328,12 @@ export default function ImovelPage({ params }: PageProps) {
             </section>
           </div>
         </div>
+
+        {semelhantes.length > 0 && (
+          <div className="mt-16 md:mt-24">
+            <ImoveisSemelhantes imoveis={semelhantes} />
+          </div>
+        )}
       </main>
 
       {/* CTA sticky no mobile — acima da bottom nav */}
