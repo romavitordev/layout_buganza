@@ -168,7 +168,11 @@ export default function ImovelPage({ params }: PageProps) {
             corre em largura cheia abaixo. No mobile, o card vem logo
             depois da galeria. */}
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-12">
-          <Gallery fotos={imovel.fotos} titulo={imovel.titulo} />
+          <Gallery
+            fotos={imovel.fotos}
+            titulo={imovel.titulo}
+            videoUrl={imovel.videoUrl}
+          />
 
           {/* Card de conversão: preço, custos e WhatsApp num lugar só */}
           <aside
@@ -277,23 +281,6 @@ export default function ImovelPage({ params }: PageProps) {
               </div>
             </section>
 
-            {imovel.videoUrl && (
-              <section aria-labelledby="video-imovel-titulo">
-                <h2
-                  id="video-imovel-titulo"
-                  className="mb-3 text-lg font-normal tracking-tight"
-                >
-                  Vídeo do imóvel
-                </h2>
-                <video
-                  src={imovel.videoUrl}
-                  controls
-                  preload="metadata"
-                  playsInline
-                  className="aspect-video w-full rounded-2xl bg-black"
-                />
-              </section>
-            )}
 
             {/* Localização aproximada (bairro) — endereço exato só após contato */}
             <section aria-labelledby="mapa-imovel-titulo">
