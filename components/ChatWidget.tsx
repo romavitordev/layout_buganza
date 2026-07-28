@@ -11,10 +11,11 @@ import { usePathname } from "next/navigation";
 import { MessageCircle, Send, X } from "lucide-react";
 import { BrandMark } from "@/components/SiteNav";
 import {
+  CATEGORIAS,
   TOPICOS,
   responder,
   respostaDoTopico,
-  topicosPorCategoria,
+  type Categoria,
 } from "@/lib/chatbot";
 import { linkWhatsAppGeral, linkWhatsAppImovel } from "@/lib/whatsapp";
 
@@ -30,8 +31,21 @@ interface Bolha {
   texto: ReactNode;
 }
 
+/**
+ * Que atalhos acompanham uma resposta do bot. A navegação tem dois
+ * níveis para não jogar uma parede de opções na cara do visitante:
+ * primeiro as CATEGORIAS ("Comprar ou alugar"…), e só dentro delas os
+ * assuntos. Cada mensagem guarda os próprios chips — por isso o nível
+ * é um parâmetro, e não um estado global.
+ */
+type Nivel =
+  | { tipo: "categorias" }
+  | { tipo: "topicos"; categoria: Categoria };
+
+const PREFIXO_CATEGORIA = "cat:";
+
 const SAUDACAO =
-  "Olá! Sou o assistente da Imóveis Buganza 👋 Como posso ajudar? Escolha um assunto abaixo ou escreva sua dúvida.";
+  "Olá! Sou o assistente da Imóveis Buganza 👋 Escreva sua dúvida — ou escolha um assunto abaixo.";
 
 export default function ChatWidget() {
   const pathname = usePathname();
@@ -67,8 +81,22 @@ export default function ChatWidget() {
     setMensagens((atual) => [...atual, bolha]);
   }
 
-  function acoesBot(topicoRespondidoId?: string): ReactNode {
-    const outros = TOPICOS.filter((t) => t.id !== topicoRespondidoId);
+  function acoesBot(
+    nivel: Nivel = { tipo: "categorias" },
+    topicoRespondidoId?: string
+  ): ReactNode {
+    const dentroDeCategoria = nivel.tipo === "topicos";
+
+    // Nível 1 = categorias; nível 2 = assuntos daquela categoria
+    const opcoes = dentroDeCategoria
+      ? TOPICOS.filter(
+          (t) => t.categoria === nivel.categoria && t.id !== topicoRespondidoId
+        ).map((t) => ({ id: t.id, titulo: t.titulo }))
+      : CATEGORIAS.map((c) => ({ id: `${PREFIXO_CATEGORIA}${c}`, titulo: c }));
+
+    const chip =
+      "rounded-pill border border-black/15 bg-white px-2.5 py-1 text-[11px] font-medium text-black/70 transition-colors hover:border-black hover:text-black";
+
     return (
       <div className="mt-3 flex flex-col gap-2">
         <a
@@ -86,22 +114,33 @@ export default function ChatWidget() {
           Falar no WhatsApp
         </a>
 
-        {outros.length > 0 && (
+        {opcoes.length > 0 && (
           <div className="mt-1 border-t border-black/8 pt-2.5">
             <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/35">
-              Posso ajudar em mais algo?
+              {dentroDeCategoria
+                ? "Escolha o assunto"
+                : "Posso ajudar em mais algo?"}
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {outros.map((t) => (
+              {opcoes.map((o) => (
                 <button
-                  key={t.id}
+                  key={o.id}
                   type="button"
-                  onClick={() => onChip(t.id)}
-                  className="rounded-pill border border-black/15 bg-white px-2.5 py-1 text-[11px] font-medium text-black/70 transition-colors hover:border-black hover:text-black"
+                  onClick={() => onChip(o.id)}
+                  className={chip}
                 >
-                  {t.titulo}
+                  {o.titulo}
                 </button>
               ))}
+              {dentroDeCategoria && (
+                <button
+                  type="button"
+                  onClick={voltarAosAssuntos}
+                  className="rounded-pill px-2.5 py-1 text-[11px] font-medium text-black/45 underline underline-offset-2 transition-colors hover:text-black"
+                >
+                  ← Outros assuntos
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -111,18 +150,53 @@ export default function ChatWidget() {
 
   function responderTexto(texto: string, resposta: ReturnType<typeof responder>) {
     empurrar({ de: "user", texto });
+    // Depois de responder, o visitante fica DENTRO da categoria do
+    // assunto — os vizinhos são o que ele provavelmente quer a seguir.
+    const topico = TOPICOS.find((t) => t.id === resposta.topicoId);
+    const nivel: Nivel = topico
+      ? { tipo: "topicos", categoria: topico.categoria }
+      : { tipo: "categorias" };
     empurrar({
       de: "bot",
       texto: (
         <>
           {resposta.texto}
-          {acoesBot(resposta.topicoId)}
+          {acoesBot(nivel, resposta.topicoId)}
+        </>
+      ),
+    });
+  }
+
+  /** Volta do nível 2 (assuntos) para o nível 1 (categorias). */
+  function voltarAosAssuntos() {
+    empurrar({
+      de: "bot",
+      texto: (
+        <>
+          Claro! Sobre o que você quer saber?
+          {acoesBot({ tipo: "categorias" })}
         </>
       ),
     });
   }
 
   function onChip(id: string) {
+    // Categoria: abre o 2º nível com os assuntos dela
+    if (id.startsWith(PREFIXO_CATEGORIA)) {
+      const categoria = id.slice(PREFIXO_CATEGORIA.length) as Categoria;
+      empurrar({ de: "user", texto: categoria });
+      empurrar({
+        de: "bot",
+        texto: (
+          <>
+            Sobre <strong>{categoria.toLowerCase()}</strong>, posso ajudar
+            com:
+            {acoesBot({ tipo: "topicos", categoria })}
+          </>
+        ),
+      });
+      return;
+    }
     const topico = TOPICOS.find((t) => t.id === id);
     if (!topico) return;
     responderTexto(topico.titulo, respostaDoTopico(id));
@@ -199,26 +273,19 @@ export default function ChatWidget() {
               </div>
             ))}
 
+            {/* Abertura enxuta: só as 3 categorias, nunca a lista inteira
+                de assuntos — os assuntos aparecem dentro da categoria. */}
             {mensagens.length === 1 && (
-              <div className="flex flex-col gap-3 pt-1">
-                {topicosPorCategoria().map(({ categoria, topicos }) => (
-                  <div key={categoria}>
-                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/35">
-                      {categoria}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {topicos.map((t) => (
-                        <button
-                          key={t.id}
-                          type="button"
-                          onClick={() => onChip(t.id)}
-                          className="rounded-pill border border-black/15 bg-white px-3 py-1.5 text-[12px] font-medium text-black/70 transition-colors hover:border-black hover:text-black"
-                        >
-                          {t.titulo}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+              <div className="flex flex-wrap gap-2 pt-1">
+                {CATEGORIAS.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => onChip(`${PREFIXO_CATEGORIA}${c}`)}
+                    className="rounded-pill border border-black/15 bg-white px-3 py-1.5 text-[12px] font-medium text-black/70 transition-colors hover:border-black hover:text-black"
+                  >
+                    {c}
+                  </button>
                 ))}
               </div>
             )}
