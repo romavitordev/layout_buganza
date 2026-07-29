@@ -116,7 +116,7 @@ export default function ChatWidget() {
 
         {opcoes.length > 0 && (
           <div className="mt-1 border-t border-black/8 pt-2.5">
-            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/35">
+            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/60">
               {dentroDeCategoria
                 ? "Escolha o assunto"
                 : "Posso ajudar em mais algo?"}
@@ -136,7 +136,7 @@ export default function ChatWidget() {
                 <button
                   type="button"
                   onClick={voltarAosAssuntos}
-                  className="rounded-pill px-2.5 py-1 text-[11px] font-medium text-black/45 underline underline-offset-2 transition-colors hover:text-black"
+                  className="rounded-pill px-2.5 py-1 text-[11px] font-medium text-black/60 underline underline-offset-2 transition-colors hover:text-black"
                 >
                   ← Outros assuntos
                 </button>
@@ -239,7 +239,7 @@ export default function ChatWidget() {
                 <p className="text-sm font-semibold tracking-tight">
                   Buganza Suporte
                 </p>
-                <p className="flex items-center gap-1.5 text-[11px] text-black/50">
+                <p className="flex items-center gap-1.5 text-[11px] text-black/60">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#25D366]" />
                   Online agora
                 </p>
@@ -249,7 +249,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setAberto(false)}
               aria-label="Fechar atendimento"
-              className="rounded-full p-1.5 text-black/50 transition-colors hover:bg-mist hover:text-black"
+              className="rounded-full p-1.5 text-black/60 transition-colors hover:bg-mist hover:text-black"
             >
               <X size={18} aria-hidden="true" />
             </button>

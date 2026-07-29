@@ -49,7 +49,7 @@ const selectCls =
   "w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-[13px] outline-none transition-colors focus:border-black md:w-auto";
 const campoCls = "flex flex-col gap-1";
 const rotuloCls =
-  "text-[11px] font-medium uppercase tracking-wide text-black/40";
+  "text-[11px] font-medium uppercase tracking-wide text-black/60";
 
 export default function CatalogoClient({
   imoveis,
@@ -222,7 +222,7 @@ export default function CatalogoClient({
           <div className="relative flex-1 md:max-w-md" role="search">
             <Search
               size={15}
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-black/35"
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-black/60"
               aria-hidden="true"
             />
             <input
@@ -403,7 +403,7 @@ export default function CatalogoClient({
             <button
               type="button"
               onClick={limparTudo}
-              className="text-[12px] font-medium text-black/50 underline-offset-2 hover:underline"
+              className="text-[12px] font-medium text-black/60 underline-offset-2 hover:underline"
             >
               Limpar tudo
             </button>
@@ -412,11 +412,11 @@ export default function CatalogoClient({
 
         {/* Contagem + ordenação */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[13px] text-black/45">
+          <p className="text-[13px] text-black/60">
             {filtrados.length} imóve{filtrados.length === 1 ? "l" : "is"}{" "}
             encontrado{filtrados.length === 1 ? "" : "s"}
           </p>
-          <label className="flex items-center gap-2 text-[12px] text-black/50">
+          <label className="flex items-center gap-2 text-[12px] text-black/60">
             <ArrowUpDown size={13} aria-hidden="true" />
             Ordenar
             <select
@@ -444,7 +444,7 @@ export default function CatalogoClient({
         </div>
       ) : (
         <div className="bz-fade-up flex flex-col items-center gap-5 rounded-2xl bg-mist px-6 py-20 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/40">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/60">
             <SearchX size={24} strokeWidth={1.5} aria-hidden="true" />
           </span>
           <div>
