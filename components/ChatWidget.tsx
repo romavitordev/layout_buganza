@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { usePathname } from "next/navigation";
-import { MessageCircle, Send, X } from "lucide-react";
+import { ArrowLeft, MessageCircle, Send, X } from "lucide-react";
 import { BrandMark } from "@/components/SiteNav";
 import { EVENTO_ABRIR_SUPORTE } from "@/lib/suporte";
 import {
@@ -76,6 +76,18 @@ export default function ChatWidget() {
   useEffect(() => {
     if (aberto) fimRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [mensagens, aberto]);
+
+  // Trava a rolagem do site enquanto o chat está aberto em tela cheia,
+  // senão a PÁGINA atrás rola junto ao fim da conversa.
+  useEffect(() => {
+    if (!aberto) return;
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    const anterior = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = anterior;
+    };
+  }, [aberto]);
 
   useEffect(() => {
     if (!aberto) return;
@@ -236,10 +248,23 @@ export default function ChatWidget() {
         <div
           role="dialog"
           aria-label="Assistente Marcelo"
-          className="fixed inset-x-4 bottom-4 z-[70] flex max-h-[80vh] flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_16px_56px_rgba(0,0,0,0.24)] md:inset-x-auto md:right-6 md:bottom-6 md:h-[560px] md:max-h-[80vh] md:w-[380px]"
+          /* No mobile ocupa a tela inteira, como um app de conversa.
+             100dvh (e não 100vh) porque no iOS a barra do navegador entra
+             na conta do vh e cortava o campo de digitação. */
+          className="fixed inset-0 z-[70] flex h-[100dvh] w-full flex-col overflow-hidden border-black/10 bg-white md:inset-auto md:right-6 md:bottom-6 md:h-[560px] md:max-h-[80vh] md:w-[380px] md:rounded-2xl md:border md:shadow-[0_16px_56px_rgba(0,0,0,0.24)]"
         >
-          <header className="flex items-center justify-between gap-3 border-b border-black/10 px-4 py-3">
+          <header className="flex items-center justify-between gap-3 border-b border-black/10 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] md:pt-3">
             <div className="flex items-center gap-2.5">
+              {/* Seta de voltar — só no mobile, onde o chat é a tela
+                  inteira e é ela que devolve o visitante ao site. */}
+              <button
+                type="button"
+                onClick={() => setAberto(false)}
+                aria-label="Voltar ao site"
+                className="-ml-1.5 rounded-full p-1.5 text-black/70 transition-colors hover:bg-mist hover:text-black md:hidden"
+              >
+                <ArrowLeft size={20} aria-hidden="true" />
+              </button>
               {/* 24px dentro do círculo de 36: com o logotipo real, o
                   tamanho padrão (30) encostava na borda e o desenho
                   ficava sem ar em volta. */}
@@ -260,7 +285,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setAberto(false)}
               aria-label="Fechar atendimento"
-              className="rounded-full p-1.5 text-black/70 transition-colors hover:bg-mist hover:text-black"
+              className="hidden rounded-full p-1.5 text-black/70 transition-colors hover:bg-mist hover:text-black md:block"
             >
               <X size={18} aria-hidden="true" />
             </button>
@@ -306,7 +331,9 @@ export default function ChatWidget() {
 
           <form
             onSubmit={onEnviarTexto}
-            className="flex items-center gap-2 border-t border-black/10 p-3"
+            // pb com safe-area: em tela cheia o campo encosta na barra
+              // de gestos do celular sem essa folga.
+              className="flex items-center gap-2 border-t border-black/10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:pb-3"
           >
             <input
               value={entrada}
