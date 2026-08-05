@@ -1,5 +1,5 @@
 /**
- * Base de conhecimento do "Buganza Suporte" — atendimento por regras
+ * Base de conhecimento do "Assistente Marcelo" — atendimento por regras
  * (casamento de palavras-chave), sem IA/LLM. Mantém tudo previsível e de
  * custo zero. Quando nenhuma regra casa, o widget oferece o WhatsApp.
  *
@@ -10,7 +10,7 @@
 export const CATEGORIAS = [
   "Comprar ou alugar",
   "Anunciar meu imóvel",
-  "Sobre a Buganza",
+  "Sobre a Marcelo Imóveis",
 ] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
@@ -64,11 +64,11 @@ export const TOPICOS: TopicoChat[] = [
     titulo: "Como anunciar meu imóvel",
     chaves: ["anunciar", "anuncio", "anúncio", "vender", "vender meu", "colocar a venda", "colocar à venda", "comissao", "comissão", "taxa", "custo para anunciar"],
     resposta:
-      "Anunciar com a Buganza é sem taxa, sem mensalidade e sem exclusividade forçada — você só paga a comissão de corretagem quando o negócio fecha. Cuidamos das fotos, do anúncio e da divulgação. Chame no WhatsApp que fazemos uma avaliação do seu imóvel.",
+      "Anunciar com a Marcelo Imóveis é sem taxa, sem mensalidade e sem exclusividade forçada — você só paga a comissão de corretagem quando o negócio fecha. Cuidamos das fotos, do anúncio e da divulgação. Chame no WhatsApp que fazemos uma avaliação do seu imóvel.",
   },
   {
     id: "cidades",
-    categoria: "Sobre a Buganza",
+    categoria: "Sobre a Marcelo Imóveis",
     titulo: "Cidades atendidas",
     chaves: ["cidade", "cidades", "regiao", "região", "onde", "atuam", "atende", "atendem", "sorocaba", "votorantim"],
     resposta:
@@ -76,7 +76,7 @@ export const TOPICOS: TopicoChat[] = [
   },
   {
     id: "atendimento",
-    categoria: "Sobre a Buganza",
+    categoria: "Sobre a Marcelo Imóveis",
     titulo: "Horário de atendimento",
     chaves: ["horario", "horário", "atendimento", "funciona", "aberto", "sabado", "sábado", "domingo", "quando"],
     resposta:

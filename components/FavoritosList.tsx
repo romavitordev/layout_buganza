@@ -51,14 +51,14 @@ export default function FavoritosList() {
   if (imoveis.length === 0) {
     return (
       <div className="bz-fade-up flex flex-col items-center gap-5 rounded-2xl bg-mist px-6 py-20 text-center">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/60">
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/70">
           <Heart size={24} strokeWidth={1.5} aria-hidden="true" />
         </span>
         <div>
           <h2 className="mb-2 text-2xl tracking-tight">
             Nenhum favorito ainda.
           </h2>
-          <p className="mx-auto max-w-md text-sm leading-relaxed text-black/55">
+          <p className="mx-auto max-w-md text-sm leading-relaxed text-black/70">
             Toque no coração de qualquer imóvel para guardá-lo aqui — a lista
             fica salva neste dispositivo, sem precisar de cadastro.
           </p>
@@ -75,7 +75,7 @@ export default function FavoritosList() {
 
   return (
     <>
-      <p className="mb-8 text-[13px] text-black/60">
+      <p className="mb-8 text-[13px] text-black/70">
         {imoveis.length} imóve{imoveis.length === 1 ? "l" : "is"} salvo
         {imoveis.length === 1 ? "" : "s"} neste dispositivo
       </p>

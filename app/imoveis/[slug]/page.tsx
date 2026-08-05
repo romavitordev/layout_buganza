@@ -52,7 +52,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
     title: imovel.titulo,
     description: descricao,
     openGraph: {
-      title: `${imovel.titulo} · Imóveis Buganza`,
+      title: `${imovel.titulo} · Marcelo Imóveis`,
       description: descricao,
       ...(capa ? { images: [{ url: capa.url }] } : {}),
     },
@@ -127,11 +127,14 @@ export default function ImovelPage({ params }: PageProps) {
     <>
       <SiteNav whatsappHref={linkWhatsAppGeral()} />
 
+      {/* Mesmo fundo do catálogo: sem ele o cartão de preço era branco
+          sobre branco e não existia como bloco. */}
+      <div className="bg-fundo">
       <main className="mx-auto max-w-6xl px-4 pb-44 pt-24 md:px-8 md:pb-20 md:pt-36">
         <div className="mb-6 flex items-center justify-between gap-4">
           <Link
             href="/imoveis"
-            className="inline-flex items-center gap-2 text-[13px] font-medium text-black/55 transition-colors hover:text-black"
+            className="inline-flex items-center gap-2 text-[13px] font-medium text-black/70 transition-colors hover:text-black"
           >
             <ArrowLeft size={15} aria-hidden="true" />
             Voltar para o catálogo
@@ -150,14 +153,14 @@ export default function ImovelPage({ params }: PageProps) {
             <span className="rounded-pill border border-black/15 px-3 py-1 text-[11px] font-medium text-black/70">
               {TRANSACAO_LABEL[imovel.transacao]}
             </span>
-            <span className="text-[11px] font-medium uppercase tracking-wide text-black/60">
+            <span className="text-[11px] font-medium uppercase tracking-wide text-black/70">
               Cód. {imovel.codigo}
             </span>
           </div>
           <h1 className="max-w-3xl text-3xl leading-tight tracking-tight md:text-4xl">
             {imovel.titulo}
           </h1>
-          <p className="mt-2 flex items-center gap-1.5 text-sm text-black/55">
+          <p className="mt-2 flex items-center gap-1.5 text-sm text-black/70">
             <MapPin size={14} aria-hidden="true" />
             {imovel.bairro} · {imovel.cidade}
           </p>
@@ -177,12 +180,18 @@ export default function ImovelPage({ params }: PageProps) {
           {/* Card de conversão: preço, custos e WhatsApp num lugar só */}
           <aside
             aria-label="Preço e contato"
-            className="rounded-2xl border border-black/10 bg-white p-6"
+            className="relative overflow-hidden rounded-2xl border border-black/10 bg-white p-6"
           >
+            {/* Filete dourado no topo do bloco de preço — é o cartão que
+                fecha o negócio, e o dourado marca isso sem virar texto. */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-[3px] bg-dourado"
+            />
             <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
               {precoVenda && (
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-black/60">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-black/70">
                     Venda
                   </p>
                   <p className="bz-num text-3xl font-semibold tracking-tight">
@@ -192,7 +201,7 @@ export default function ImovelPage({ params }: PageProps) {
               )}
               {precoLocacao && (
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-black/60">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-black/70">
                     Locação
                   </p>
                   <p className="bz-num text-3xl font-semibold tracking-tight">
@@ -205,7 +214,7 @@ export default function ImovelPage({ params }: PageProps) {
                   <p className="bz-num text-3xl font-semibold tracking-tight">
                     Sob consulta
                   </p>
-                  <p className="mt-1 text-[12px] text-black/60">
+                  <p className="mt-1 text-[12px] text-black/70">
                     Chame no WhatsApp — respondemos rápido
                   </p>
                 </div>
@@ -213,7 +222,7 @@ export default function ImovelPage({ params }: PageProps) {
             </div>
 
             {custos.length > 0 && (
-              <p className="mt-3 border-t border-black/8 pt-3 text-[12px] text-black/55">
+              <p className="mt-3 border-t border-black/8 pt-3 text-[12px] text-black/70">
                 {custos.join(" · ")}
               </p>
             )}
@@ -225,12 +234,11 @@ export default function ImovelPage({ params }: PageProps) {
               <MessageCircle
                 size={16}
                 strokeWidth={2.5}
-                className="text-[#25D366]"
                 aria-hidden="true"
               />
               {rotuloCta}
             </WhatsAppLink>
-            <p className="mt-2 text-center text-[11px] text-black/60">
+            <p className="mt-2 text-center text-[11px] text-black/70">
               Resposta rápida · atendimento direto com os corretores
             </p>
 
@@ -238,20 +246,20 @@ export default function ImovelPage({ params }: PageProps) {
                 ao lado da galeria e resume os números do imóvel */}
             {caracteristicas.length > 0 && (
               <div className="mt-6 border-t border-black/10 pt-5">
-                <p className="mb-3 text-[11px] font-medium uppercase tracking-wide text-black/60">
+                <p className="mb-3 text-[11px] font-medium uppercase tracking-wide text-black/70">
                   Características
                 </p>
                 <ul className="grid grid-cols-2 gap-x-4 gap-y-4">
                   {caracteristicas.map(({ icone: Icone, rotulo, valor }) => (
                     <li key={rotulo} className="flex items-center gap-2.5">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-mist text-black/55">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-mist text-black/70">
                         <Icone size={16} strokeWidth={1.75} aria-hidden="true" />
                       </span>
                       <span className="min-w-0">
                         <span className="block text-sm font-semibold leading-tight tracking-tight">
                           {valor}
                         </span>
-                        <span className="block truncate text-[10px] font-medium uppercase tracking-wide text-black/60">
+                        <span className="block truncate text-[10px] font-medium uppercase tracking-wide text-black/70">
                           {rotulo}
                         </span>
                       </span>
@@ -302,7 +310,7 @@ export default function ImovelPage({ params }: PageProps) {
                 allowFullScreen
                 className="aspect-video w-full rounded-2xl border border-black/10 grayscale transition-[filter] duration-500 ease-premium hover:grayscale-0"
               />
-              <p className="mt-2 text-[12px] text-black/60">
+              <p className="mt-2 text-[12px] text-black/70">
                 {imovel.enderecoMapa
                   ? `${imovel.enderecoMapa} · ${imovel.bairro}, ${imovel.cidade}`
                   : `Localização aproximada (${imovel.bairro}) — passamos o endereço completo no atendimento pelo WhatsApp.`}
@@ -316,6 +324,7 @@ export default function ImovelPage({ params }: PageProps) {
           </div>
         )}
       </main>
+      </div>
 
       {/* CTA sticky no mobile — acima da bottom nav */}
       <div className="fixed inset-x-0 bottom-16 z-40 border-t border-black/10 bg-white/95 p-3 backdrop-blur md:hidden">
@@ -326,7 +335,6 @@ export default function ImovelPage({ params }: PageProps) {
           <MessageCircle
             size={16}
             strokeWidth={2.5}
-            className="text-[#25D366]"
             aria-hidden="true"
           />
           {rotuloCta}

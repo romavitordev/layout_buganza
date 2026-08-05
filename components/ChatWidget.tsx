@@ -20,7 +20,7 @@ import {
 import { linkWhatsAppGeral, linkWhatsAppImovel } from "@/lib/whatsapp";
 
 /**
- * "Buganza Suporte" — widget de atendimento flutuante (vitrine estática).
+ * "Assistente Marcelo" — widget de atendimento flutuante (vitrine estática).
  * Responde a dúvidas frequentes por regras (lib/chatbot.ts); quando não
  * sabe, oferece o WhatsApp. Aqui NÃO há backend de leads: o "Deixar meu
  * contato" leva direto ao WhatsApp (no site real, grava em /api/leads).
@@ -45,7 +45,7 @@ type Nivel =
 const PREFIXO_CATEGORIA = "cat:";
 
 const SAUDACAO =
-  "Olá! Sou o assistente da Imóveis Buganza 👋 Escreva sua dúvida — ou escolha um assunto abaixo.";
+  "Olá! Sou o assistente da Marcelo Imóveis 👋 Escreva sua dúvida — ou escolha um assunto abaixo.";
 
 export default function ChatWidget() {
   const pathname = usePathname();
@@ -108,7 +108,6 @@ export default function ChatWidget() {
           <MessageCircle
             size={13}
             strokeWidth={2.5}
-            className="text-[#25D366]"
             aria-hidden="true"
           />
           Falar no WhatsApp
@@ -116,7 +115,7 @@ export default function ChatWidget() {
 
         {opcoes.length > 0 && (
           <div className="mt-1 border-t border-black/8 pt-2.5">
-            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/60">
+            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/70">
               {dentroDeCategoria
                 ? "Escolha o assunto"
                 : "Posso ajudar em mais algo?"}
@@ -136,7 +135,7 @@ export default function ChatWidget() {
                 <button
                   type="button"
                   onClick={voltarAosAssuntos}
-                  className="rounded-pill px-2.5 py-1 text-[11px] font-medium text-black/60 underline underline-offset-2 transition-colors hover:text-black"
+                  className="rounded-pill px-2.5 py-1 text-[11px] font-medium text-black/70 underline underline-offset-2 transition-colors hover:text-black"
                 >
                   ← Outros assuntos
                 </button>
@@ -216,7 +215,7 @@ export default function ChatWidget() {
         <button
           type="button"
           onClick={() => setAberto(true)}
-          aria-label="Abrir atendimento Buganza Suporte"
+          aria-label="Abrir atendimento Assistente Marcelo"
           className="fixed right-4 bottom-[5.5rem] z-[70] inline-flex items-center gap-2.5 rounded-pill bg-black px-6 py-4 text-[15px] font-medium text-white shadow-[0_10px_36px_rgba(0,0,0,0.28)] transition-transform duration-200 ease-premium hover:-translate-y-0.5 md:bottom-5 md:right-5"
         >
           <MessageCircle size={22} strokeWidth={2} aria-hidden="true" />
@@ -227,19 +226,22 @@ export default function ChatWidget() {
       {aberto && (
         <div
           role="dialog"
-          aria-label="Buganza Suporte"
+          aria-label="Assistente Marcelo"
           className="fixed inset-x-4 bottom-4 z-[70] flex max-h-[80vh] flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_16px_56px_rgba(0,0,0,0.24)] md:inset-x-auto md:right-6 md:bottom-6 md:h-[560px] md:max-h-[80vh] md:w-[380px]"
         >
           <header className="flex items-center justify-between gap-3 border-b border-black/10 px-4 py-3">
             <div className="flex items-center gap-2.5">
+              {/* 24px dentro do círculo de 36: com o logotipo real, o
+                  tamanho padrão (30) encostava na borda e o desenho
+                  ficava sem ar em volta. */}
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-mist">
-                <BrandMark />
+                <BrandMark size={24} />
               </span>
               <div>
                 <p className="text-sm font-semibold tracking-tight">
-                  Buganza Suporte
+                  Assistente Marcelo
                 </p>
-                <p className="flex items-center gap-1.5 text-[11px] text-black/60">
+                <p className="flex items-center gap-1.5 text-[11px] text-black/70">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#25D366]" />
                   Online agora
                 </p>
@@ -249,7 +251,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setAberto(false)}
               aria-label="Fechar atendimento"
-              className="rounded-full p-1.5 text-black/60 transition-colors hover:bg-mist hover:text-black"
+              className="rounded-full p-1.5 text-black/70 transition-colors hover:bg-mist hover:text-black"
             >
               <X size={18} aria-hidden="true" />
             </button>

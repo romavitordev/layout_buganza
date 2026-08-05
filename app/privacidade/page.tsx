@@ -7,7 +7,7 @@ import { linkWhatsAppGeral } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Política de Privacidade",
   description:
-    "Como a Imóveis Buganza trata os dados de quem navega no site: analytics anônimo, sem venda de dados, em conformidade com a LGPD.",
+    "Como a Marcelo Imóveis trata os dados de quem navega no site: analytics anônimo, sem venda de dados, em conformidade com a LGPD.",
 };
 
 const ATUALIZADO_EM = "4 de julho de 2026";
@@ -19,14 +19,14 @@ export default function PrivacidadePage() {
 
       <main className="mx-auto max-w-3xl px-4 pb-24 pt-28 md:px-8 md:pt-36">
         <header className="bz-fade-up mb-10">
-          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/55">
+          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/70">
             <span className="bz-dot" aria-hidden="true" />
             Transparência
           </p>
           <h1 className="text-4xl tracking-tight md:text-5xl">
             Política de Privacidade
           </h1>
-          <p className="mt-3 text-[13px] text-black/60">
+          <p className="mt-3 text-[13px] text-black/70">
             Última atualização: {ATUALIZADO_EM}
           </p>
         </header>
@@ -179,7 +179,7 @@ export default function PrivacidadePage() {
               >
                 imoveisbuganza@gmail.com
               </a>{" "}
-              · Imóveis Buganza · CRECI 118400 · Sorocaba/SP.
+              · Marcelo Imóveis · CRECI 118400 · Sorocaba/SP.
             </p>
           </section>
 

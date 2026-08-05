@@ -21,7 +21,7 @@ const MENSAGEM_GERAL =
   "Olá! Vim pelo site e gostaria de saber mais sobre os imóveis disponíveis.";
 
 const MENSAGEM_ANUNCIAR =
-  "Olá! Tenho um imóvel e gostaria de anunciá-lo com a Imóveis Buganza. Podemos conversar?";
+  "Olá! Tenho um imóvel e gostaria de anunciá-lo com a Marcelo Imóveis. Podemos conversar?";
 
 export function linkWhatsAppGeral(): string {
   return link(MENSAGEM_GERAL);

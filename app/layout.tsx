@@ -12,11 +12,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     default:
-      "Imóveis Buganza — Especialistas em Imóveis Residenciais e Comerciais",
-    template: "%s · Imóveis Buganza",
+      "Marcelo Imóveis — Especialistas em Imóveis Residenciais e Comerciais",
+    template: "%s · Marcelo Imóveis",
   },
   description:
-    "Imóveis Buganza: compra, venda e locação de imóveis residenciais e comerciais em Sorocaba e região. CRECI 118400. Fale conosco pelo WhatsApp.",
+    "Marcelo Imóveis: compra, venda e locação de imóveis residenciais e comerciais em Sorocaba e região. CRECI 118400. Fale conosco pelo WhatsApp.",
 };
 
 export default function RootLayout({

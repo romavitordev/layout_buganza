@@ -1,11 +1,12 @@
 import { Plus } from "lucide-react";
 import { linkWhatsAppGeral } from "@/lib/whatsapp";
+import { MARCA } from "@/lib/marca";
 
 /** Dúvidas mais comuns de quem compra, aluga ou anuncia um imóvel. */
 
 const PERGUNTAS = [
   {
-    pergunta: "Quanto custa anunciar meu imóvel com a Buganza?",
+    pergunta: `Quanto custa anunciar meu imóvel com a ${MARCA.nomeCurto}?`,
     resposta:
       "Nada. Você só paga a comissão de corretagem quando o negócio é concluído — sem taxa de anúncio, sem mensalidade e sem exclusividade forçada.",
   },
@@ -40,7 +41,7 @@ export default function Faq() {
     >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 md:grid-cols-[2fr_3fr] md:gap-16 md:px-8 md:py-24">
         <div className="bz-fade-up">
-          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/55">
+          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/70">
             <span className="bz-dot" aria-hidden="true" />
             Perguntas frequentes
           </p>
@@ -50,7 +51,7 @@ export default function Faq() {
           >
             Tudo o que você precisa saber antes de decidir.
           </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-black/60">
+          <p className="mt-4 text-[15px] leading-relaxed text-black/70">
             Não achou sua dúvida aqui? Manda no WhatsApp — a gente responde
             de verdade, sem robô.
           </p>
@@ -80,7 +81,7 @@ export default function Faq() {
                   <Plus size={14} strokeWidth={2.5} />
                 </span>
               </summary>
-              <p className="pb-5 text-[13px] leading-relaxed text-black/60">
+              <p className="pb-5 text-[13px] leading-relaxed text-black/70">
                 {resposta}
               </p>
             </details>

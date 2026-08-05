@@ -49,7 +49,7 @@ const selectCls =
   "w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-[13px] outline-none transition-colors focus:border-black md:w-auto";
 const campoCls = "flex flex-col gap-1";
 const rotuloCls =
-  "text-[11px] font-medium uppercase tracking-wide text-black/60";
+  "text-[11px] font-medium uppercase tracking-wide text-black/70";
 
 export default function CatalogoClient({
   imoveis,
@@ -222,7 +222,7 @@ export default function CatalogoClient({
           <div className="relative flex-1 md:max-w-md" role="search">
             <Search
               size={15}
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-black/60"
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-black/70"
               aria-hidden="true"
             />
             <input
@@ -403,7 +403,7 @@ export default function CatalogoClient({
             <button
               type="button"
               onClick={limparTudo}
-              className="text-[12px] font-medium text-black/60 underline-offset-2 hover:underline"
+              className="text-[12px] font-medium text-black/70 underline-offset-2 hover:underline"
             >
               Limpar tudo
             </button>
@@ -412,11 +412,11 @@ export default function CatalogoClient({
 
         {/* Contagem + ordenação */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[13px] text-black/60">
+          <p className="text-[13px] text-black/70">
             {filtrados.length} imóve{filtrados.length === 1 ? "l" : "is"}{" "}
             encontrado{filtrados.length === 1 ? "" : "s"}
           </p>
-          <label className="flex items-center gap-2 text-[12px] text-black/60">
+          <label className="flex items-center gap-2 text-[12px] text-black/70">
             <ArrowUpDown size={13} aria-hidden="true" />
             Ordenar
             <select
@@ -444,14 +444,14 @@ export default function CatalogoClient({
         </div>
       ) : (
         <div className="bz-fade-up flex flex-col items-center gap-5 rounded-2xl bg-mist px-6 py-20 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/60">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/70">
             <SearchX size={24} strokeWidth={1.5} aria-hidden="true" />
           </span>
           <div>
             <h2 className="mb-2 text-2xl tracking-tight">
               Nenhum imóvel com esses filtros — por enquanto.
             </h2>
-            <p className="mx-auto max-w-md text-sm leading-relaxed text-black/55">
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-black/70">
               Nosso catálogo muda toda semana e nem tudo chega a ser
               publicado. Conte pelo WhatsApp o que você procura e vamos atrás
               do imóvel certo para você.
@@ -466,7 +466,6 @@ export default function CatalogoClient({
             <MessageCircle
               size={15}
               strokeWidth={2.5}
-              className="text-[#25D366]"
               aria-hidden="true"
             />
             Falar no WhatsApp

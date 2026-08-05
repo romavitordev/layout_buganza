@@ -24,7 +24,7 @@ export const DEPOIMENTOS: Depoimento[] = [
     nome: "José Carlos",
     contexto: "Vendeu casa no Jardim Europa",
     texto:
-      "Tentei vender sozinho por oito meses. Com a Buganza, foram fotos novas, anúncio caprichado e proposta séria em cinco semanas. Negociação transparente do início ao fim.",
+      "Tentei vender sozinho por oito meses. Com a Marcelo Imóveis, foram fotos novas, anúncio caprichado e proposta séria em cinco semanas. Negociação transparente do início ao fim.",
   },
   {
     nome: "Ana Paula",

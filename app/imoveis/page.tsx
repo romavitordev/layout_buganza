@@ -8,7 +8,7 @@ import { linkWhatsAppGeral } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Imóveis disponíveis",
   description:
-    "Catálogo de imóveis residenciais e comerciais da Imóveis Buganza. Compra, venda e locação em Sorocaba e região.",
+    "Catálogo de imóveis residenciais e comerciais da Marcelo Imóveis. Compra, venda e locação em Sorocaba e região.",
 };
 
 export default function ImoveisPage() {
@@ -16,9 +16,12 @@ export default function ImoveisPage() {
     <>
       <SiteNav whatsappHref={linkWhatsAppGeral()} />
 
+      {/* Fundo levemente azulado: é o que faz o card branco existir
+          como objeto, em vez de branco sobre branco. */}
+      <div className="min-h-[60svh] bg-fundo">
       <main className="mx-auto max-w-6xl px-4 pb-20 pt-28 md:px-8 md:pt-36">
         <header className="bz-fade-up mb-10">
-          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/55">
+          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/70">
             <span className="bz-dot" aria-hidden="true" />
             Catálogo completo
           </p>
@@ -27,6 +30,7 @@ export default function ImoveisPage() {
 
         <CatalogoClient imoveis={IMOVEIS} cidades={cidadesDisponiveis()} />
       </main>
+      </div>
 
       <SiteFooter />
     </>
