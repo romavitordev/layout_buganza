@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ChatWidget from "@/components/ChatWidget";
-import { VarreduraTema } from "@/components/ThemeToggle";
 import "./globals.css";
 
 const inter = Inter({
@@ -42,7 +41,6 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {children}
-        <VarreduraTema />
         <ChatWidget />
       </body>
     </html>
