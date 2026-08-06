@@ -116,7 +116,7 @@ export default function ChatWidget() {
       : CATEGORIAS.map((c) => ({ id: `${PREFIXO_CATEGORIA}${c}`, titulo: c }));
 
     const chip =
-      "rounded-pill border border-black/15 bg-white px-2.5 py-1 text-[11px] font-medium text-black/70 transition-colors hover:border-black hover:text-black";
+      "rounded-pill border border-black/15 bg-white px-2.5 py-1 text-[12px] md:text-[11px] font-medium text-black/70 transition-colors hover:border-black hover:text-black";
 
     return (
       <div className="mt-3 flex flex-col gap-2">
@@ -136,7 +136,7 @@ export default function ChatWidget() {
 
         {opcoes.length > 0 && (
           <div className="mt-1 border-t border-black/8 pt-2.5">
-            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-black/70">
+            <p className="mb-1.5 text-[12px] md:text-[10px] font-semibold uppercase tracking-wide text-black/70">
               {dentroDeCategoria
                 ? "Escolha o assunto"
                 : "Posso ajudar em mais algo?"}
@@ -156,7 +156,7 @@ export default function ChatWidget() {
                 <button
                   type="button"
                   onClick={voltarAosAssuntos}
-                  className="rounded-pill px-2.5 py-1 text-[11px] font-medium text-black/70 underline underline-offset-2 transition-colors hover:text-black"
+                  className="rounded-pill px-2.5 py-1 text-[12px] md:text-[11px] font-medium text-black/70 underline underline-offset-2 transition-colors hover:text-black"
                 >
                   ← Outros assuntos
                 </button>
@@ -275,7 +275,7 @@ export default function ChatWidget() {
                 <p className="text-sm font-semibold tracking-tight">
                   Assistente Marcelo
                 </p>
-                <p className="flex items-center gap-1.5 text-[11px] text-black/70">
+                <p className="flex items-center gap-1.5 text-[12px] md:text-[11px] text-black/70">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#25D366]" />
                   Online agora
                 </p>

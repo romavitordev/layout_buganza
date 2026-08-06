@@ -40,7 +40,10 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        {/* No MOBILE só os três primeiros aparecem: cada card tem ~516px
+              e os seis somavam 4,4 telas de uma home que já tinha quase 12.
+              Quem quer ver mais tem o "Ver todos os imóveis" acima. */}
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3 [&>*:nth-child(n+4)]:hidden md:[&>*:nth-child(n+4)]:block">
           {DESTAQUES.map((imovel, i) => (
             <PropertyCard key={imovel.id} imovel={imovel} prioridade={i < 3} />
           ))}
