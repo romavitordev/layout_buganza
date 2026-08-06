@@ -49,7 +49,7 @@ const selectCls =
   "w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-[13px] outline-none transition-colors focus:border-black md:w-auto";
 const campoCls = "flex flex-col gap-1";
 const rotuloCls =
-  "text-[12px] md:text-[11px] font-medium uppercase tracking-wide text-black/70";
+  "text-[12px] md:text-[11px] font-medium uppercase tracking-wide text-secundario";
 
 export default function CatalogoClient({
   imoveis,
@@ -222,7 +222,7 @@ export default function CatalogoClient({
           <div className="relative flex-1 md:max-w-md" role="search">
             <Search
               size={15}
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-black/70"
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-secundario"
               aria-hidden="true"
             />
             <input
@@ -242,7 +242,7 @@ export default function CatalogoClient({
             className={`inline-flex items-center gap-2 rounded-pill border px-4 py-2.5 text-[13px] font-medium transition-colors md:hidden ${
               chips.length > 0
                 ? "border-black bg-black text-white"
-                : "border-black/15 text-black/70"
+                : "border-black/15 text-secundario"
             }`}
           >
             <SlidersHorizontal size={14} aria-hidden="true" />
@@ -403,7 +403,7 @@ export default function CatalogoClient({
             <button
               type="button"
               onClick={limparTudo}
-              className="text-[12px] font-medium text-black/70 underline-offset-2 hover:underline"
+              className="text-[12px] font-medium text-secundario underline-offset-2 hover:underline"
             >
               Limpar tudo
             </button>
@@ -412,11 +412,11 @@ export default function CatalogoClient({
 
         {/* Contagem + ordenação */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[13px] text-black/70">
+          <p className="text-[13px] text-secundario">
             {filtrados.length} imóve{filtrados.length === 1 ? "l" : "is"}{" "}
             encontrado{filtrados.length === 1 ? "" : "s"}
           </p>
-          <label className="flex items-center gap-2 text-[12px] text-black/70">
+          <label className="flex items-center gap-2 text-[12px] text-secundario">
             <ArrowUpDown size={13} aria-hidden="true" />
             Ordenar
             <select
@@ -444,14 +444,14 @@ export default function CatalogoClient({
         </div>
       ) : (
         <div className="bz-fade-up flex flex-col items-center gap-5 rounded-2xl bg-mist px-6 py-20 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black/70">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-secundario">
             <SearchX size={24} strokeWidth={1.5} aria-hidden="true" />
           </span>
           <div>
             <h2 className="mb-2 text-2xl tracking-tight">
               Nenhum imóvel com esses filtros — por enquanto.
             </h2>
-            <p className="mx-auto max-w-md text-sm leading-relaxed text-black/70">
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-secundario">
               Nosso catálogo muda toda semana e nem tudo chega a ser
               publicado. Conte pelo WhatsApp o que você procura e vamos atrás
               do imóvel certo para você.

@@ -21,7 +21,7 @@ export default function ImoveisPage() {
       <div className="min-h-[60svh] bg-fundo">
       <main className="mx-auto max-w-6xl px-4 pb-20 pt-28 md:px-8 md:pt-36">
         <header className="bz-fade-up mb-10">
-          <p className="mb-2 flex items-center gap-2 text-[13px] text-black/70">
+          <p className="mb-2 flex items-center gap-2 text-[13px] text-secundario">
             <span className="bz-dot" aria-hidden="true" />
             Catálogo completo
           </p>
