@@ -33,8 +33,14 @@ export function linkWhatsAppAnunciar(): string {
 
 export function linkWhatsAppImovel(slug: string): string {
   const imovel = imovelPorSlug(slug);
+  // A mensagem acompanha o rótulo do botão: ele diz "Agendar uma
+  // visita", então ela pede a visita. Sem preço público o convite é
+  // outro — ali o que trava a conversa é não saber quanto custa.
+  const temPreco = Boolean(imovel?.precoVenda || imovel?.precoLocacao);
   const mensagem = imovel
-    ? `Olá! Tenho interesse no imóvel "${imovel.titulo}" (cód. ${imovel.codigo}). Poderia me passar mais informações e valores?`
+    ? temPreco
+      ? `Olá! Vi o imóvel "${imovel.titulo}" (cód. ${imovel.codigo}) no site e gostaria de agendar uma visita.`
+      : `Olá! Vi o imóvel "${imovel.titulo}" (cód. ${imovel.codigo}) no site e gostaria de saber o valor.`
     : MENSAGEM_GERAL;
   return link(mensagem);
 }

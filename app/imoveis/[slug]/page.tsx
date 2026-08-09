@@ -76,9 +76,16 @@ export default function ImovelPage({ params }: PageProps) {
   const precoVenda = formatarPreco(imovel.precoVenda);
   const precoLocacao = precoLocacaoFormatado(imovel);
   const temPreco = Boolean(precoVenda) || Boolean(precoLocacao);
-  const rotuloCta = temPreco
-    ? "Tenho interesse — chamar no WhatsApp"
-    : "Consultar valor no WhatsApp";
+  /**
+   * O CTA sobe um degrau em relação ao card do catálogo, onde o botão é
+   * "Falar sobre este imóvel". Quem chegou aqui já viu fotos, preço e
+   * ficha; o próximo passo real dela é ver o imóvel.
+   *
+   * O texto antigo descrevia um sentimento em vez de uma ação, repetia
+   * no rótulo o canal que o ícone já mostra, e quebrava em duas linhas
+   * dentro da coluna lateral.
+   */
+  const rotuloCta = temPreco ? "Agendar uma visita" : "Consultar valor";
 
   // Custos recorrentes ficam junto do preço (é a conta que o comprador faz)
   const custos = [
@@ -239,7 +246,9 @@ export default function ImovelPage({ params }: PageProps) {
               {rotuloCta}
             </WhatsAppLink>
             <p className="mt-2 text-center text-[12px] md:text-[11px] text-secundario">
-              Resposta rápida · atendimento direto com os corretores
+              {temPreco
+                ? "Sem compromisso · resposta rápida no WhatsApp"
+                : "Resposta rápida · atendimento direto com os corretores"}
             </p>
 
             {/* Ficha de características no próprio card — preenche a coluna
