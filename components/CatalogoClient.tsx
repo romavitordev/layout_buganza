@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowUpDown,
   MessageCircle,
@@ -55,7 +56,25 @@ export default function CatalogoClient({
   imoveis,
   cidades,
 }: CatalogoClientProps) {
-  const [busca, setBusca] = useState("");
+  /**
+   * A busca começa com o que veio na URL (?q=), e não vazia.
+   *
+   * É a lupa da navbar que manda para cá: sem ler o parâmetro, a pessoa
+   * digitava "Campolim", chegava no catálogo e encontrava o campo em
+   * branco com a lista inteira — como se o pedido dela tivesse sido
+   * ignorado.
+   *
+   * `useSearchParams` e não `window.location`: numa página exportada
+   * estaticamente, o inicializador do useState roda na PRÉ-RENDERIZAÇÃO,
+   * quando `window` não existe — e devolve vazio para sempre. Foi
+   * exatamente o que aconteceu na primeira tentativa. Este hook é
+   * reativo e enxerga a URL do cliente.
+   *
+   * Daí em diante quem manda é o estado: a filtragem aqui é toda no
+   * cliente, porque a vitrine não tem servidor para refazer a consulta.
+   */
+  const searchParams = useSearchParams();
+  const [busca, setBusca] = useState(searchParams.get("q") ?? "");
   const [tipo, setTipo] = useState<TipoImovel | "">("");
   const [transacao, setTransacao] = useState<Transacao | "">("");
   const [cidade, setCidade] = useState("");

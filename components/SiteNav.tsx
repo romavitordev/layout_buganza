@@ -10,10 +10,11 @@ import {
   useState,
   type MouseEvent,
 } from "react";
-import { Building2, Headset, Heart, Home, MessageCircle, Users } from "lucide-react";
+import { Building2, Headset, Heart, Home, MessageCircle, Search, Users, X } from "lucide-react";
 import { CORES, MARCA } from "@/lib/marca";
 import { abrirSuporte } from "@/lib/suporte";
 import ThemeToggle from "@/components/ThemeToggle";
+import NavBusca from "@/components/NavBusca";
 
 interface SiteNavProps {
   whatsappHref: string;
@@ -189,8 +190,47 @@ function prefereMenosMovimento(): boolean {
 }
 
 export default function SiteNav({ whatsappHref, animated }: SiteNavProps) {
-  const pathname = usePathname();
+  const pathnameCru = usePathname();
+  /**
+   * A vitrine roda com `trailingSlash: true` (é export estático para o
+   * GitHub Pages), então aqui o caminho chega como "/imoveis/" e não
+   * "/imoveis". Sem normalizar, toda comparação de rota falha em
+   * silêncio — a lupa apareceria no catálogo e o link ativo não
+   * acenderia.
+   */
+  const pathname =
+    pathnameCru.length > 1 ? pathnameCru.replace(/\/$/, "") : pathnameCru;
   const naHome = pathname === "/";
+  /**
+   * O catálogo já tem busca própria, dentro da barra de filtros — e lá
+   * ela vem acompanhada dos filtros, que é o que a pessoa quer usar
+   * junto. Uma segunda lupa na navbar, sem os filtros do lado, só faria
+   * o visitante escolher a errada.
+   *
+   * Vale só para a LISTA. Na página de um imóvel não há busca nenhuma,
+   * então lá a lupa continua fazendo falta.
+   */
+  const noCatalogo = pathname === "/imoveis";
+
+  /**
+   * Busca do mobile: fechada, é só uma lupa; aberta, toma a navbar
+   * inteira. É o padrão do YouTube e de quase todo app de celular, e
+   * existe por um motivo simples — na largura de um telefone não há
+   * espaço para um campo de texto permanente que não atrapalhe outra
+   * coisa.
+   *
+   * A tentativa anterior era uma barra fixa no hero. Funcionava, mas
+   * ficava órfã: separada da navbar por um vão, colada por cima da
+   * ilustração e cortando a torre no meio. Parecia adesivo, não
+   * interface.
+   */
+  const [buscaAberta, setBuscaAberta] = useState(false);
+
+  // Trocar de página fecha a busca — senão ela fica aberta por cima do
+  // resultado que a pessoa acabou de pedir.
+  useEffect(() => {
+    setBuscaAberta(false);
+  }, [pathname]);
 
   // Estado "scrolled": a barra ganha fundo/borda ao rolar, para o logo e o
   // CTA não flutuarem soltos sobre o conteúdo
@@ -326,7 +366,9 @@ export default function SiteNav({ whatsappHref, animated }: SiteNavProps) {
         aria-label="Principal"
       >
         <Link
-          className="flex items-center gap-2"
+          className={`items-center gap-2 ${
+            buscaAberta ? "hidden md:flex" : "flex"
+          }`}
           href="/"
           aria-label={`${MARCA.nome} — início`}
         >
@@ -336,10 +378,16 @@ export default function SiteNav({ whatsappHref, animated }: SiteNavProps) {
           </span>
         </Link>
 
+{/* Bloco central: links + busca.
+            A navbar é `justify-between` com três blocos, e entre eles
+            sobravam duas faixas largas de nada num monitor de 1440px. A
+            busca ocupa uma delas em vez de criar um quarto bloco, que
+            desequilibraria a distribuição. */}
+        <div className="hidden items-center gap-2 md:flex">
         {/* Links inline — só desktop; no mobile a navegação fica na barra inferior */}
         <div
           ref={desktopRef}
-          className="relative hidden items-center gap-1 rounded-pill bg-white/85 p-1 shadow-[0_2px_16px_rgba(0,0,0,0.06)] backdrop-blur md:flex"
+          className="relative flex items-center gap-1 rounded-pill bg-white/85 p-1 shadow-[0_2px_16px_rgba(0,0,0,0.06)] backdrop-blur"
         >
           <span
             aria-hidden="true"
@@ -369,6 +417,11 @@ export default function SiteNav({ whatsappHref, animated }: SiteNavProps) {
               </Link>
             );
           })}
+          </div>
+
+          {/* Só na home: no catálogo já existe busca dentro dos filtros,
+              e dois campos na mesma tela confundem. */}
+          {naHome && <NavBusca />}
         </div>
 
         {/* HIERARQUIA DOS TRÊS BOTÕES.
@@ -377,7 +430,42 @@ export default function SiteNav({ whatsappHref, animated }: SiteNavProps) {
             — mantém o disco marinho preenchido. Tema e atendimento viram
             ícones "fantasma", sem disco, com a mesma área de toque
             (44px) garantida por padding, e não por tamanho aparente. */}
-        <div className="flex items-center gap-0.5 md:gap-1.5">
+        {/* Busca aberta: toma a largura toda da navbar no mobile. No
+            desktop este bloco não existe — lá a busca fica sempre
+            visível ao lado dos links. */}
+        {buscaAberta && (
+          <div className="flex flex-1 items-center gap-1 md:hidden">
+            <NavBusca variante="mobile" autoFoco />
+            <button
+              type="button"
+              onClick={() => setBuscaAberta(false)}
+              aria-label="Fechar busca"
+              className="bz-icon-btn shrink-0"
+            >
+              <X size={19} strokeWidth={2} aria-hidden="true" />
+            </button>
+          </div>
+        )}
+
+        <div
+          className={`items-center gap-0.5 md:gap-1.5 ${
+            buscaAberta ? "hidden md:flex" : "flex"
+          }`}
+        >
+          {/* Lupa — só mobile, e fora do catálogo (ver noCatalogo). No
+              desktop a busca já está na barra. */}
+          {!noCatalogo && (
+            <button
+              type="button"
+              onClick={() => setBuscaAberta(true)}
+              aria-label="Buscar imóveis"
+              aria-expanded={buscaAberta}
+              className="bz-icon-btn md:hidden"
+            >
+              <Search size={19} strokeWidth={2} aria-hidden="true" />
+            </button>
+          )}
+
           <ThemeToggle />
 
           {/* Atendimento — só no mobile. No desktop quem abre o chat é o

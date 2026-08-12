@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import CatalogoClient from "@/components/CatalogoClient";
 import SiteNav from "@/components/SiteNav";
@@ -28,7 +29,15 @@ export default function ImoveisPage() {
           <h1 className="text-4xl tracking-tight md:text-5xl">Imóveis</h1>
         </header>
 
-        <CatalogoClient imoveis={IMOVEIS} cidades={cidadesDisponiveis()} />
+        {/* Suspense obrigatório: o CatalogoClient usa useSearchParams
+            para ler o ?q= que a lupa da navbar manda, e num projeto
+            `output: "export"` o Next exige a fronteira — sem ela o
+            build falha. O fallback fica vazio de propósito: a espera é
+            de um quadro, e um esqueleto piscando ali chamaria mais
+            atenção que a própria lista aparecendo. */}
+        <Suspense fallback={null}>
+          <CatalogoClient imoveis={IMOVEIS} cidades={cidadesDisponiveis()} />
+        </Suspense>
       </main>
       </div>
 
