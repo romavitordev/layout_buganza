@@ -36,8 +36,11 @@ export const MARCA = {
   regiao: "Sorocaba e região",
 
   /**
-   * E-mail público de contato (rodapé e política de privacidade).
-   * TROQUE quando o endereço definitivo existir.
+   * E-mail público de contato — rodapé e política de privacidade.
+   *
+   * É o endereço definitivo, informado pelos donos. No site real ele é
+   * também o login do painel e o destino dos avisos de lead; aqui, na
+   * vitrine estática, só aparece como contato.
    */
   email: "marceloimoveissorocaba@gmail.com",
   /**
@@ -54,14 +57,10 @@ export const MARCA = {
 /**
  * CRÉDITO DE QUEM FEZ O SITE — a assinatura discreta do rodapé.
  *
- * Fica VAZIO por enquanto e, vazio, não aparece na tela. A empresa
- * ainda não tem nome, e uma assinatura com nome provisório é pior que
- * assinatura nenhuma: ela vai ao ar, é indexada pelo Google e passa a
- * ser o nome pelo qual o trabalho é conhecido.
- *
- * Quando o nome existir, preencher aqui — e só aqui:
- *
- *   export const CREDITO = { nome: "Estúdio Tal", url: "https://..." };
+ * `nome` vazio esconde o bloco inteiro, sem deixar buraco no layout: a
+ * assinatura ficou fora do ar até o estúdio ter nome, porque um nome
+ * provisório publicado é indexado pelo Google e vira o nome pelo qual o
+ * trabalho passa a ser conhecido.
  *
  * `url` é opcional: sem ela o crédito vira texto simples, sem link.
  */

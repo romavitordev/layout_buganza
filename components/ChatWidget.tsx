@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { ArrowLeft, MessageCircle, Send, X } from "lucide-react";
 import { BrandMark } from "@/components/SiteNav";
 import { EVENTO_ABRIR_SUPORTE } from "@/lib/suporte";
+import { MARCA } from "@/lib/marca";
 import {
   CATEGORIAS,
   TOPICOS,
@@ -45,8 +46,13 @@ type Nivel =
 
 const PREFIXO_CATEGORIA = "cat:";
 
-const SAUDACAO =
-  "Olá! Sou o assistente da Marcelo Imóveis 👋 Escreva sua dúvida — ou escolha um assunto abaixo.";
+/**
+ * Curta de propósito. A versão anterior tinha duas orações e quebrava em
+ * três linhas dentro da bolha, o que fazia a conversa começar parecendo
+ * um aviso. Os assuntos já aparecem em botões logo abaixo — dizer isso
+ * por escrito era repetir o que a tela mostra.
+ */
+const SAUDACAO = `Olá! Sou o ${MARCA.assistente} 👋 Como posso ajudar?`;
 
 export default function ChatWidget() {
   const pathname = usePathname();
@@ -55,6 +61,9 @@ export default function ChatWidget() {
     { de: "bot", texto: SAUDACAO },
   ]);
   const [entrada, setEntrada] = useState("");
+  /** Bolha de "digitando" no lugar da resposta que ainda vai chegar. */
+  const [digitando, setDigitando] = useState(false);
+  const esperaRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Gatilho externo: no mobile quem abre o chat é o ícone da navbar,
   // que fica noutro ramo da árvore (ver lib/suporte.ts).
@@ -73,9 +82,20 @@ export default function ChatWidget() {
     ? linkWhatsAppImovel(slugImovel)
     : linkWhatsAppGeral();
 
+  // `digitando` entra na lista de propósito: quando a bolha das
+  // bolinhas aparece, ela é o novo fim da conversa e precisa puxar a
+  // rolagem junto, senão nasce escondida abaixo do corte.
   useEffect(() => {
     if (aberto) fimRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [mensagens, aberto]);
+  }, [mensagens, aberto, digitando]);
+
+  // Timer pendente não pode sobreviver ao componente: sem isto, fechar a
+  // página no meio da pausa dispara um setState em algo desmontado.
+  useEffect(() => {
+    return () => {
+      if (esperaRef.current) clearTimeout(esperaRef.current);
+    };
+  }, []);
 
   // Trava a rolagem do site enquanto o chat está aberto em tela cheia,
   // senão a PÁGINA atrás rola junto ao fim da conversa.
@@ -100,6 +120,31 @@ export default function ChatWidget() {
 
   function empurrar(bolha: Bolha) {
     setMensagens((atual) => [...atual, bolha]);
+  }
+
+  /**
+   * Resposta do bot com pausa de "digitando".
+   *
+   * Resposta instantânea entrega que é robô: ninguém lê a pergunta,
+   * pensa e escreve em zero segundo. A pausa não é enfeite — ela dá ao
+   * visitante o tempo de LER a própria mensagem antes de a resposta
+   * empurrar a conversa para cima.
+   *
+   * O tempo varia de propósito. Fixo em 1s, o padrão fica audível na
+   * terceira mensagem e volta a parecer máquina.
+   */
+  function empurrarBot(bolha: Bolha) {
+    if (esperaRef.current) clearTimeout(esperaRef.current);
+    setDigitando(true);
+    // 0,7s a 1,6s. Textos longos ganham um pouco mais, como alguém que
+    // digita mais tempo para escrever mais.
+    const tamanho = typeof bolha.texto === "string" ? bolha.texto.length : 90;
+    const espera = 700 + Math.random() * 500 + Math.min(tamanho * 4, 400);
+    esperaRef.current = setTimeout(() => {
+      setDigitando(false);
+      empurrar(bolha);
+      esperaRef.current = null;
+    }, espera);
   }
 
   function acoesBot(
@@ -176,7 +221,7 @@ export default function ChatWidget() {
     const nivel: Nivel = topico
       ? { tipo: "topicos", categoria: topico.categoria }
       : { tipo: "categorias" };
-    empurrar({
+    empurrarBot({
       de: "bot",
       texto: (
         <>
@@ -189,7 +234,7 @@ export default function ChatWidget() {
 
   /** Volta do nível 2 (assuntos) para o nível 1 (categorias). */
   function voltarAosAssuntos() {
-    empurrar({
+    empurrarBot({
       de: "bot",
       texto: (
         <>
@@ -205,7 +250,7 @@ export default function ChatWidget() {
     if (id.startsWith(PREFIXO_CATEGORIA)) {
       const categoria = id.slice(PREFIXO_CATEGORIA.length) as Categoria;
       empurrar({ de: "user", texto: categoria });
-      empurrar({
+      empurrarBot({
         de: "bot",
         texto: (
           <>
@@ -251,7 +296,7 @@ export default function ChatWidget() {
           /* No mobile ocupa a tela inteira, como um app de conversa.
              100dvh (e não 100vh) porque no iOS a barra do navegador entra
              na conta do vh e cortava o campo de digitação. */
-          className="fixed inset-0 z-[70] flex h-[100dvh] w-full flex-col overflow-hidden border-black/10 bg-white md:inset-auto md:right-6 md:bottom-6 md:h-[560px] md:max-h-[80vh] md:w-[380px] md:rounded-2xl md:border md:shadow-[0_16px_56px_rgba(0,0,0,0.24)]"
+          className="fixed inset-0 z-[70] flex h-[100dvh] w-full flex-col overflow-hidden border-black/10 bg-white md:inset-auto md:right-6 md:bottom-6 md:h-[560px] md:max-h-[80vh] md:w-[420px] md:rounded-2xl md:border md:shadow-[0_16px_56px_rgba(0,0,0,0.24)]"
         >
           <header className="flex items-center justify-between gap-3 border-b border-black/10 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] md:pt-3">
             <div className="flex items-center gap-2.5">
@@ -298,7 +343,7 @@ export default function ChatWidget() {
                 className={m.de === "user" ? "flex justify-end" : "flex justify-start"}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
+                  className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
                     m.de === "user"
                       ? "bg-black text-white"
                       : "bg-mist text-black/80"
@@ -308,6 +353,22 @@ export default function ChatWidget() {
                 </div>
               </div>
             ))}
+
+            {/* Bolha de "digitando".
+             *
+             * aria-hidden de propósito: para quem usa leitor de tela, o
+             * que importa é a RESPOSTA quando ela chega — anunciar
+             * "digitando" a cada pergunta viraria ruído repetido, sem
+             * acrescentar nada que o silêncio já não diga. */}
+            {digitando && (
+              <div className="flex justify-start" aria-hidden="true">
+                <div className="bz-digitando flex items-center gap-1 rounded-2xl bg-mist px-3.5 py-3">
+                  <span className="block h-1.5 w-1.5 rounded-full bg-black/45" />
+                  <span className="block h-1.5 w-1.5 rounded-full bg-black/45" />
+                  <span className="block h-1.5 w-1.5 rounded-full bg-black/45" />
+                </div>
+              </div>
+            )}
 
             {/* Abertura enxuta: só as 3 categorias, nunca a lista inteira
                 de assuntos — os assuntos aparecem dentro da categoria. */}

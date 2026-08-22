@@ -9,8 +9,8 @@ const nextConfig = {
   basePath,
   trailingSlash: true,
   env: {
-    // Número oficial da Marcelo Imóveis: +55 15 99829-6767
-    NEXT_PUBLIC_WHATSAPP_NUMBER: "5515998296767",
+    // Número oficial da Marcelo Imóveis Sorocaba: +55 15 99803-6636
+    NEXT_PUBLIC_WHATSAPP_NUMBER: "5515998036636",
     /**
      * O basePath legível pelo código do cliente. O Next só o aplica
      * sozinho em <Link> e next/image; o logotipo do SiteNav é um <img>

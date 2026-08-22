@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ChatWidget from "@/components/ChatWidget";
+import { MARCA } from "@/lib/marca";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,12 +12,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "Marcelo Imóveis — Especialistas em Imóveis Residenciais e Comerciais",
-    template: "%s · Marcelo Imóveis",
+    default: `${MARCA.nome} — Especialistas em Negociações Imobiliárias`,
+    template: `%s · ${MARCA.nome}`,
   },
   description:
-    "Marcelo Imóveis: compra, venda e locação de imóveis residenciais e comerciais em Sorocaba e região. CRECI 118400. Fale conosco pelo WhatsApp.",
+    `${MARCA.nome}: compra, venda e locação de imóveis residenciais e comerciais em ${MARCA.regiao}. CRECI ${MARCA.creci}. Fale conosco pelo WhatsApp.`,
 };
 
 export default function RootLayout({

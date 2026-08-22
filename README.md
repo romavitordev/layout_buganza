@@ -1,6 +1,6 @@
 # Buganza Imóveis — Layout (front)
 
-Versão **estática, somente front-end**, do site da [Imóveis Buganza](https://github.com/romavitordev/buganza_imoveis) — catálogo imobiliário de Sorocaba/SP (CRECI 118400).
+Versão **estática, somente front-end**, do site da [Imóveis Buganza](https://github.com/romavitordev/buganza_imoveis) — catálogo imobiliário de Sorocaba/SP (CRECI 118.400-F).
 
 - **Demo (GitHub Pages):** https://romavitordev.github.io/layout_buganza/
 - **Repo completo (banco + admin + APIs):** [buganza_imoveis](https://github.com/romavitordev/buganza_imoveis)

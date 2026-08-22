@@ -10,7 +10,7 @@
 import { imovelPorSlug } from "@/lib/imoveis-data";
 
 function whatsappNumber(): string {
-  return process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "5515998296767";
+  return process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "5515998036636";
 }
 
 function link(mensagem: string): string {
