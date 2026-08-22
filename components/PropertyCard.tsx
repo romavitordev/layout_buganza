@@ -82,7 +82,7 @@ export default function PropertyCard({
             <ImageOff size={32} strokeWidth={1.5} aria-hidden="true" />
           </span>
         )}
-        <span className="absolute left-3 top-3 rounded-pill bg-white/90 px-3 py-1.5 text-[12px] md:text-[12px] md:text-[11px] font-medium text-black backdrop-blur">
+        <span className="absolute left-3 top-3 rounded-pill bg-white/90 px-3 py-1.5 text-[12px] md:text-[11px] font-medium text-black backdrop-blur">
           {imovel.subtipo ? SUBTIPO_LABEL[imovel.subtipo] : TIPO_LABEL[imovel.tipo]}
           {" · "}
           {TRANSACAO_LABEL[imovel.transacao]}
