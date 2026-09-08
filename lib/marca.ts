@@ -27,7 +27,7 @@ export const MARCA = {
   /** Nome do assistente do chat, no site e nos rótulos de acessibilidade. */
   assistente: "Assistente Marcelo",
   /** Como o painel administrativo se identifica nos títulos das abas. */
-  painel: "Painel Marcelo Imóveis",
+  painel: `Painel ${nome}`,
 
   creci: "118.400-F",
   cidade: "Sorocaba",
@@ -38,9 +38,11 @@ export const MARCA = {
   /**
    * E-mail público de contato — rodapé e política de privacidade.
    *
-   * É o endereço definitivo, informado pelos donos. No site real ele é
-   * também o login do painel e o destino dos avisos de lead; aqui, na
-   * vitrine estática, só aparece como contato.
+   * É o endereço definitivo, informado pelos donos. Ele também é o login
+   * do painel (ADMIN_EMAIL) e o destino dos avisos de lead
+   * (LEAD_NOTIFY_EMAIL) no .env — se um dia mudar, os três precisam
+   * mudar juntos, ou o admin passa a entrar por um endereço e receber
+   * aviso em outro.
    */
   email: "marceloimoveissorocaba@gmail.com",
   /**
